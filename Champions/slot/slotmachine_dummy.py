@@ -4,9 +4,9 @@
 import random
 import collections
 
-# from .secret import flag
-flag = "45"
-PRINTABLE = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~s"
+from .secret import flag
+
+PRINTABLE = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 flag_length = len(flag)
 SLOT_LENGTH = 10
 NO_COINS = "No more coins! Goodbye."
@@ -16,11 +16,7 @@ INITIAL_COINS = 10
 
 class Slotmachine(object):
     def __init__(self):
-        # for i in flag:
-        #     arr = [i]
-        #     print(arr)
         self.slots = [[i]+[random.choice(PRINTABLE) for i in range(SLOT_LENGTH)] for i in flag]
-        print(self.slots)
         self.attempt_num = 0
         self.total_coins = INITIAL_COINS
         self.last_result = ""
@@ -29,7 +25,6 @@ class Slotmachine(object):
     def get_prize(self):
         result = self.last_result
         prize = sum([x for x in collections.Counter(result).values() if x > 2])
-        print("prize", prize)
         prize *= self.last_gamble
         self.total_coins += prize
         return prize
@@ -56,17 +51,14 @@ class Slotmachine(object):
 
         random.seed(coins + self.attempt_num)
         self.attempt_num += 1
-        print("test", self.slots)
 
         for i in self.slots:
             random.shuffle(i)
 
         result = ""
         for i in self.slots:
-            
             result += random.choice(i)
         self.last_result = result
-        print("result", result)
         return result 
 
 # This is used to run the slotmachine locally, the server doesn't use this.
@@ -94,6 +86,4 @@ def main():
 
 
 if __name__ == '__main__':
-    for i in range(28):
-        print(2, end = '')
-    # main()
+    main()
